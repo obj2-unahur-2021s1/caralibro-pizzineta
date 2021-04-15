@@ -1,12 +1,14 @@
 package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
   describe("Caralibro") {
     val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
     val fotoEnCuzco = Foto(768, 1024)
+    val videoFiesta = Video(65, 480)
 
     describe("Una publicación") {
       describe("de tipo foto") {
@@ -21,6 +23,21 @@ class UsuarioTest : DescribeSpec({
         }
       }
     }
+      describe("de tipo video") {
+        it("de calidad SD") {
+          videoFiesta.espacioQueOcupa().shouldBe(65)
+        }
+        it("de calidad 720HD")
+        {
+          videoFiesta.cambiarCalidad(720)
+          videoFiesta.espacioQueOcupa().shouldBe(195)
+        }
+        it("de calidad 1080HD")
+        {
+          videoFiesta.cambiarCalidad(1080)
+          videoFiesta.espacioQueOcupa().shouldBe(390)
+        }
+      }
 
     describe("Un usuario") {
       it("puede calcular el espacio que ocupan sus publicaciones") {

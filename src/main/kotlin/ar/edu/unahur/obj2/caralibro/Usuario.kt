@@ -8,8 +8,10 @@ class Usuario {
   }
 
   fun espacioDePublicaciones() = publicaciones.sumBy { it.espacioQueOcupa() }
-  fun agregarAmigo(unAmigo: Usuario) =
+  fun agregarAmigo(unAmigo: Usuario) {
     amigos.add(unAmigo)
+    unAmigo.amigos.add(this)
+  }
 
   fun leDaLikeA(unaPublicacion: Publicacion) = unaPublicacion.quienDioLike.add(this)
 }

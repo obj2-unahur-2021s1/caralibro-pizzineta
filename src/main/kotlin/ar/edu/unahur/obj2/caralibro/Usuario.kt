@@ -14,4 +14,10 @@ class Usuario {
   }
 
   fun leDaLikeA(unaPublicacion: Publicacion) = unaPublicacion.quienDioLike.add(this)
+  fun cantidadDeAmigos() = amigos.size
+  fun esMasAmistosoQue(unUsuario: Usuario)= this.cantidadDeAmigos() > unUsuario.cantidadDeAmigos()
+  fun stalkeaA(unUsuario: Usuario)=
+
+  }
+
 }

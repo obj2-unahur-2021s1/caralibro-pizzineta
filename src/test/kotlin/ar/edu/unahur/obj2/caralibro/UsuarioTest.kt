@@ -1,6 +1,8 @@
 package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
@@ -9,6 +11,26 @@ class UsuarioTest : DescribeSpec({
     val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
     val fotoEnCuzco = Foto(768, 1024)
     val videoFiesta = Video(65)
+    val radaelli = Usuario()
+    val llop = Usuario()
+    val russo = Usuario()
+    val pizzi = Usuario()
+    val sava = Usuario()
+    val beccacece = Usuario()
+    val ischia = Usuario()
+    val zubeldia = Usuario()
+    val vivas = Usuario()
+
+    sava.agregarAmigo(beccacece)
+    ischia.agregarAmigo(vivas)
+    pizzi.agregarAmigo(zubeldia)
+    beccacece.agregarAmigo(zubeldia)
+    vivas.agregarAmigo(pizzi)
+    russo.agregarAmigo(radaelli)
+    radaelli.agregarAmigo(llop)
+    llop.agregarAmigo(sava)
+    sava.agregarAmigo(radaelli)
+    sava.agregarAmigo(vivas)
 
     describe("Una publicación") {
       describe("de tipo foto") {
@@ -46,6 +68,17 @@ class UsuarioTest : DescribeSpec({
         juana.agregarPublicacion(fotoEnCuzco)
         juana.agregarPublicacion(saludoCumpleanios)
         juana.espacioDePublicaciones().shouldBe(550548)
+      }
+      it("cantidad de amigos del usuario"){
+        sava.esMasAmistosoQue(pizzi).shouldBeTrue()
+        beccacece.esMasAmistosoQue(russo).shouldBeTrue()
+        llop.esMasAmistosoQue(zubeldia).shouldBeFalse()
+      }
+    }
+
+    describe("Stalkear") {
+      it("Un usuario stalkea a otro:"){
+        sava.stalkeaA(vivas).shouldBeTrue()
       }
     }
   }

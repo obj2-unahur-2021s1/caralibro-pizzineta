@@ -10,7 +10,9 @@ class UsuarioTest : DescribeSpec({
   describe("Caralibro") {
     val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
     val fotoEnCuzco = Foto(768, 1024)
+    val fotoDelPartido = Foto(1080, 1920)
     val videoFiesta = Video(65)
+    val textoDespedida = Texto("Hicimos lo que pudimos")
     val radaelli = Usuario()
     val llop = Usuario()
     val russo = Usuario()
@@ -20,6 +22,7 @@ class UsuarioTest : DescribeSpec({
     val ischia = Usuario()
     val zubeldia = Usuario()
     val vivas = Usuario()
+
 
     sava.agregarAmigo(beccacece)
     ischia.agregarAmigo(vivas)
@@ -31,6 +34,12 @@ class UsuarioTest : DescribeSpec({
     llop.agregarAmigo(sava)
     sava.agregarAmigo(radaelli)
     sava.agregarAmigo(vivas)
+    vivas.agregarPublicacion(fotoEnCuzco)
+    vivas.agregarPublicacion(fotoDelPartido)
+    vivas.agregarPublicacion(textoDespedida)
+    sava.leDaLikeA(textoDespedida)
+    sava.leDaLikeA(fotoDelPartido)
+    sava.leDaLikeA(fotoEnCuzco)
 
     describe("Una publicación") {
       describe("de tipo foto") {
@@ -78,7 +87,7 @@ class UsuarioTest : DescribeSpec({
 
     describe("Stalkear") {
       it("Un usuario stalkea a otro:"){
-        sava.stalkeaA(vivas).shouldBeTrue()
+        vivas.esStalkeadoPor(sava).shouldBeTrue()
       }
     }
   }

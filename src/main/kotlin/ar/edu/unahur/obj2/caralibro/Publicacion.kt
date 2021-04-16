@@ -8,6 +8,8 @@ abstract class Publicacion {
   val quienDioLike = mutableSetOf<Usuario>()
 
   fun cantidadDeLikes() = quienDioLike.size
+
+  fun tieneLikeDe(unUsuario: Usuario) = quienDioLike.contains(unUsuario)
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {

@@ -5,6 +5,9 @@ import kotlin.math.ceil
 
 abstract class Publicacion {
   abstract fun espacioQueOcupa(): Int
+  val quienDioLike = mutableSetOf<Usuario>()
+
+  fun cantidadDeLikes() = quienDioLike.size
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
@@ -16,7 +19,9 @@ class Texto(val contenido: String) : Publicacion() {
   override fun espacioQueOcupa() = contenido.length
 }
 
-class Video(val duracion: Int, var calidad: Int) : Publicacion() {
+class Video(val duracion: Int) : Publicacion() {
+  var calidad = 480
+  val calidadesAdmitidas = listOf(480, 720, 1080)
   override fun espacioQueOcupa() = //PROVISORIO
     if (calidad == 480) {
       duracion
@@ -32,7 +37,9 @@ class Video(val duracion: Int, var calidad: Int) : Publicacion() {
     }
 
   fun cambiarCalidad(unaCalidad: Int) {
-    this.calidad = unaCalidad
+    if (calidadesAdmitidas.contains(unaCalidad)) {
+      this.calidad = unaCalidad
+    }
   }
 }
 

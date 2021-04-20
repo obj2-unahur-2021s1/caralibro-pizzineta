@@ -8,11 +8,11 @@ import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
     describe("Caralibro") {
-        val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
-        val fotoEnCuzco = Foto(768, 1024)
-        val fotoDelPartido = Foto(1080, 1920)
-        val videoFiesta = Video(65, SD480)
-        val textoDespedida = Texto("Hicimos lo que pudimos")
+        val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz", publico)
+        val fotoEnCuzco = Foto(768, 1024, soloAmigos)
+        val fotoDelPartido = Foto(1080, 1920, mejoresAmigos)
+        val videoFiesta = Video(65, SD480, publicoConExluidos)
+        val textoDespedida = Texto("Hicimos lo que pudimos", mejoresAmigos)
         val radaelli = Usuario()
         val llop = Usuario()
         val russo = Usuario()
@@ -22,7 +22,7 @@ class UsuarioTest : DescribeSpec({
         val ischia = Usuario()
         val zubeldia = Usuario()
         val vivas = Usuario()
-        val textoBienvenida = Texto("Buenos dias a todos")
+        val textoBienvenida = Texto("Buenos dias a todos", publico)
 
         sava.agregarAmigo(beccacece)
         ischia.agregarAmigo(vivas)
@@ -106,6 +106,20 @@ class UsuarioTest : DescribeSpec({
         describe("Stalkear") {
             it("Un usuario es stalkeadp por otro:") {
                 vivas.esStalkeadoPor(sava).shouldBeTrue()
+            }
+        }
+        describe("privacidad de publicaciones"){
+            it("modificar privacidad"){
+                textoBienvenida.cambiarPrivacidad(soloAmigos)
+            }
+            it("Saber si un usuario puede ver una publicacion"){
+                russo.puedeVer(textoBienvenida).shouldBeTrue()
+                radaelli.puedeVer(fotoDelPartido).shouldBeFalse()
+                llop.puedeVer(textoDespedida).shouldBeTrue()
+                zubeldia.puedeVer(videoFiesta).shouldBeTrue()
+            }
+            it("mejores amigos de un usuario"){
+                beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
             }
         }
     }

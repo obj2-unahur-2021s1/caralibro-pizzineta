@@ -13,35 +13,37 @@ abstract class Publicacion {
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
-  val factorDeCompresion = 0.7
-  override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion).toInt()
+
+  override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion.tamanio).toInt()
 }
 
 class Texto(val contenido: String) : Publicacion() {
   override fun espacioQueOcupa() = contenido.length
 }
 
-class Video(val duracion: Int) : Publicacion() {
-  var calidad = 480
-  val calidadesAdmitidas = listOf(480, 720, 1080)
-  override fun espacioQueOcupa() = //PROVISORIO
-    if (calidad == 480) {
-      duracion
-    }
-    else if (calidad == 720) {
-      duracion * 3
-    }
-    else if (calidad == 1080) {
-      (duracion * 3) * 2
-    }
-    else {
-      throw Exception("Calidad no admitida")
-    }
+class Video(val duracion:Int, var calidad:Calidad): Publicacion(){
+  override fun espacioQueOcupa()=calidad.espacioQueOcupa(duracion)
 
-  fun cambiarCalidad(unaCalidad: Int) {
-    if (calidadesAdmitidas.contains(unaCalidad)) {
-      this.calidad = unaCalidad
-    }
+  fun cambiarCalidad(unaCalidad: Calidad) {
+    this.calidad = unaCalidad
   }
 }
+
+abstract class Calidad() {
+  abstract fun espacioQueOcupa(duracion: Int): Int
+}
+
+object SD480: Calidad(){
+  override fun espacioQueOcupa(duracion: Int) = duracion
+}
+object HD720: Calidad(){
+  override fun espacioQueOcupa(duracion: Int) = duracion * 3
+}
+object HD1080: Calidad(){
+  override fun espacioQueOcupa(duracion: Int) = HD720.espacioQueOcupa(duracion) * 2
+}
+
+object factorDeCompresion {
+  var tamanio = 0.7
+  }
 

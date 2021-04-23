@@ -8,11 +8,11 @@ import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
     describe("Caralibro") {
-        val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz", publico)
-        val fotoEnCuzco = Foto(768, 1024, soloAmigos)
-        val fotoDelPartido = Foto(1080, 1920, mejoresAmigos)
-        val videoFiesta = Video(65, SD480, publicoConExluidos)
-        val textoDespedida = Texto("Hicimos lo que pudimos", mejoresAmigos)
+        val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz", Publico)
+        val fotoEnCuzco = Foto(768, 1024, SoloAmigos)
+        val fotoDelPartido = Foto(1080, 1920, SoloAmigos)
+        val videoFiesta = Video(65, SD480, PublicoConExcluidos)
+        val textoDespedida = Texto("Hicimos lo que pudimos", PrivadoConPermitidos)
         val radaelli = Usuario()
         val llop = Usuario()
         val russo = Usuario()
@@ -22,7 +22,7 @@ class UsuarioTest : DescribeSpec({
         val ischia = Usuario()
         val zubeldia = Usuario()
         val vivas = Usuario()
-        val textoBienvenida = Texto("Buenos dias a todos", publico)
+        val textoBienvenida = Texto("Buenos dias a todos", Publico)
 
         sava.agregarAmigo(beccacece)
         ischia.agregarAmigo(vivas)
@@ -43,6 +43,12 @@ class UsuarioTest : DescribeSpec({
         pizzi.agregarPublicacion(textoBienvenida)
         ischia.leDaLikeA(textoBienvenida)
         zubeldia.leDaLikeA(textoBienvenida)
+        vivas.agregarPermitidos(llop)
+        sava.agregarPublicacion(videoFiesta)
+        sava.agregarExcluidos(zubeldia)
+        vivas.agregarAmigo(radaelli)
+
+
 
         describe("Una publicación") {
             describe("de tipo foto") {
@@ -110,16 +116,16 @@ class UsuarioTest : DescribeSpec({
         }
         describe("privacidad de publicaciones"){
             it("modificar privacidad"){
-                textoBienvenida.cambiarPrivacidad(soloAmigos)
+                textoBienvenida.cambiarPrivacidad(SoloAmigos)
             }
             it("Saber si un usuario puede ver una publicacion"){
                 russo.puedeVer(textoBienvenida).shouldBeTrue()
-                radaelli.puedeVer(fotoDelPartido).shouldBeFalse()
+                radaelli.puedeVer(fotoDelPartido).shouldBeTrue()
                 llop.puedeVer(textoDespedida).shouldBeTrue()
-                zubeldia.puedeVer(videoFiesta).shouldBeTrue()
+                zubeldia.puedeVer(videoFiesta).shouldBeFalse()
             }
             it("mejores amigos de un usuario"){
-                beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
+         //       beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
             }
         }
     }

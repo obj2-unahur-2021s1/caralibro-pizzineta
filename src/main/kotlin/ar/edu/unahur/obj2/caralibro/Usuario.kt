@@ -3,10 +3,13 @@ package ar.edu.unahur.obj2.caralibro
 class Usuario {
   val publicaciones = mutableListOf<Publicacion>()
   val amigos = mutableSetOf<Usuario>()
+  val permitidos = mutableSetOf<Usuario>()
+  val excluidos = mutableSetOf<Usuario>()
 
 
   fun agregarPublicacion(publicacion: Publicacion) {
     publicaciones.add(publicacion)
+    publicacion.creador = this
   }
 
   fun espacioDePublicaciones() = publicaciones.sumBy { it.espacioQueOcupa() }
@@ -14,7 +17,14 @@ class Usuario {
     amigos.add(unAmigo)
     unAmigo.amigos.add(this)
   }
+  fun agregarPermitidos(unUsuario: Usuario){
+    permitidos.add(unUsuario)
+  }
+  fun agregarExcluidos(unUsuario: Usuario){
+    excluidos.add(unUsuario)
+  }
 
+  fun puedeVer(unaPublicacion: Publicacion) = unaPublicacion.puedeSerVistaPor(this)
   fun leDaLikeA(unaPublicacion: Publicacion) = unaPublicacion.quienDioLike.add(this)
   fun cantidadDeAmigos() = amigos.size
   fun esMasAmistosoQue(unUsuario: Usuario) = this.cantidadDeAmigos() > unUsuario.cantidadDeAmigos()

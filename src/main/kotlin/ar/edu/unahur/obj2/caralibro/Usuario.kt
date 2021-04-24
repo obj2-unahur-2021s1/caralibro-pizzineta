@@ -46,4 +46,6 @@ class Usuario {
   fun cantidadDePublicaciones() = publicaciones.size
   fun cantidadDeLikesDe(unUsuario: Usuario) = publicaciones.count{it.tieneLikeDe(unUsuario)}
   fun mejoresAmigos() = this.permitidos
+  fun amigoMasPopular() = amigos.maxByOrNull {it.cantidadTotalDeLikes()}
+  fun cantidadTotalDeLikes() = publicaciones.sumBy { it.cantidadDeLikes() }
 }

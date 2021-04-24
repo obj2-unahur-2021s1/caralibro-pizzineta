@@ -137,5 +137,10 @@ class UsuarioTest : DescribeSpec({
                 chacho.mejoresAmigos().shouldBe((setOf(llop, russo, beccacece)))
             }
         }
+        describe("Saber quien es mas popular"){
+            it("saber quien es el amigo mas popular") {
+                ischia.amigoMasPopular().shouldBe(vivas)
+            }
+        }
     }
 })

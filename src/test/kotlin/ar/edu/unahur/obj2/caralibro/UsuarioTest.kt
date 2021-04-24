@@ -125,7 +125,7 @@ class UsuarioTest : DescribeSpec({
                 zubeldia.puedeVer(videoFiesta).shouldBeFalse()
             }
             it("mejores amigos de un usuario"){
-         //       beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
+               beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
             }
         }
     }

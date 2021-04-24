@@ -1,5 +1,7 @@
 package ar.edu.unahur.obj2.caralibro
 
+import java.lang.Exception
+
 class Usuario {
   val publicaciones = mutableListOf<Publicacion>()
   val amigos = mutableSetOf<Usuario>()
@@ -17,10 +19,21 @@ class Usuario {
     amigos.add(unAmigo)
     unAmigo.amigos.add(this)
   }
+
   fun agregarPermitidos(unUsuario: Usuario){
+    if(!this.amigos.contains(unUsuario)){
+      throw Exception("El usuario que intenta agregar debe ser amigo")
+    }
+    if (excluidos.contains(unUsuario)){
+      excluidos.remove(unUsuario)
+    }
     permitidos.add(unUsuario)
   }
+
   fun agregarExcluidos(unUsuario: Usuario){
+    if (this.permitidos.contains(unUsuario)) {
+      permitidos.remove(unUsuario)
+    }
     excluidos.add(unUsuario)
   }
 
@@ -32,5 +45,5 @@ class Usuario {
 
   fun cantidadDePublicaciones() = publicaciones.size
   fun cantidadDeLikesDe(unUsuario: Usuario) = publicaciones.count{it.tieneLikeDe(unUsuario)}
-
+  fun mejoresAmigos() = this.permitidos
 }

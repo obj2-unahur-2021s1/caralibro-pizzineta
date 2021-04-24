@@ -22,6 +22,7 @@ class UsuarioTest : DescribeSpec({
         val ischia = Usuario()
         val zubeldia = Usuario()
         val vivas = Usuario()
+        val chacho = Usuario()
         val textoBienvenida = Texto("Buenos dias a todos", Publico)
 
         sava.agregarAmigo(beccacece)
@@ -43,10 +44,18 @@ class UsuarioTest : DescribeSpec({
         pizzi.agregarPublicacion(textoBienvenida)
         ischia.leDaLikeA(textoBienvenida)
         zubeldia.leDaLikeA(textoBienvenida)
+        vivas.agregarAmigo(llop)
         vivas.agregarPermitidos(llop)
         sava.agregarPublicacion(videoFiesta)
         sava.agregarExcluidos(zubeldia)
         vivas.agregarAmigo(radaelli)
+        chacho.agregarAmigo(llop)
+        chacho.agregarAmigo(russo)
+        chacho.agregarAmigo(beccacece)
+        chacho.agregarPermitidos(llop)
+        chacho.agregarPermitidos(russo)
+        chacho.agregarPermitidos(beccacece)
+
 
 
 
@@ -97,7 +106,7 @@ class UsuarioTest : DescribeSpec({
             it("Saber si un usuario es más amistoso que otro") {
                 sava.esMasAmistosoQue(pizzi).shouldBeTrue()
                 beccacece.esMasAmistosoQue(russo).shouldBeTrue()
-                llop.esMasAmistosoQue(zubeldia).shouldBeFalse()
+                zubeldia.esMasAmistosoQue(llop).shouldBeFalse()
             }
         }
         describe("Funciones de likes") {
@@ -125,9 +134,8 @@ class UsuarioTest : DescribeSpec({
                 zubeldia.puedeVer(videoFiesta).shouldBeFalse()
             }
             it("mejores amigos de un usuario"){
-               beccacece.mejoresAmigos().shouldBe.(setOf(llop, russo, ischia))
+                chacho.mejoresAmigos().shouldBe((setOf(llop, russo, beccacece)))
             }
         }
     }
 })
-

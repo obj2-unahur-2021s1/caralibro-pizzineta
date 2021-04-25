@@ -38,7 +38,12 @@ class Usuario {
   }
 
   fun puedeVer(unaPublicacion: Publicacion) = unaPublicacion.puedeSerVistaPor(this)
-  fun leDaLikeA(unaPublicacion: Publicacion) = unaPublicacion.quienDioLike.add(this)
+  fun leDaLikeA(unaPublicacion: Publicacion) {
+    if(this.puedeVer(unaPublicacion)) {
+      unaPublicacion.quienDioLike.add(this)
+    }
+  }
+
   fun cantidadDeAmigos() = amigos.size
   fun esMasAmistosoQue(unUsuario: Usuario) = this.cantidadDeAmigos() > unUsuario.cantidadDeAmigos()
   fun esStalkeadoPor(unUsuario: Usuario) = cantidadDeLikesDe(unUsuario) > (this.cantidadDePublicaciones() * 0.9)

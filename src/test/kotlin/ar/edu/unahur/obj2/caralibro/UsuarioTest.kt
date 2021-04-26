@@ -28,42 +28,13 @@ class UsuarioTest : DescribeSpec({
         val chacho = Usuario()
 
 
-        sava.agregarAmigo(beccacece)
-        ischia.agregarAmigo(vivas)
-        ischia.agregarAmigo(pizzi)
-        pizzi.agregarAmigo(zubeldia)
-        beccacece.agregarAmigo(zubeldia)
-        vivas.agregarAmigo(pizzi)
-        russo.agregarAmigo(radaelli)
-        radaelli.agregarAmigo(llop)
-        llop.agregarAmigo(sava)
-        sava.agregarAmigo(radaelli)
-        sava.agregarAmigo(vivas)
-        vivas.agregarAmigo(radaelli)
-        chacho.agregarAmigo(llop)
-        chacho.agregarAmigo(russo)
-        chacho.agregarAmigo(beccacece)
-        vivas.agregarAmigo(llop)
-
         vivas.agregarPublicacion(fotoEnCuzco)
         vivas.agregarPublicacion(fotoDelPartido)
         vivas.agregarPublicacion(textoDespedida)
         pizzi.agregarPublicacion(textoBienvenida)
         sava.agregarPublicacion(videoFiesta)
-        vivas.agregarPermitidos(sava)
-        sava.leDaLikeA(textoDespedida)
-        sava.leDaLikeA(fotoDelPartido)
-        sava.leDaLikeA(fotoEnCuzco)
-        ischia.leDaLikeA(textoBienvenida)
-        zubeldia.leDaLikeA(textoBienvenida)
 
-        vivas.agregarPermitidos(llop)
 
-        chacho.agregarPermitidos(llop)
-        chacho.agregarPermitidos(russo)
-        chacho.agregarPermitidos(beccacece)
-
-        sava.agregarExcluidos(zubeldia)
 
         describe("Una publicación") {
             describe("de tipo foto") {
@@ -109,15 +80,52 @@ class UsuarioTest : DescribeSpec({
             }
         }
 
-        describe("2. Poder darle me gusta a una publicación, y conocer cuántas veces fue votada de esta forma.") {
-            it("textoBienvenida debe tener 2 likes") {
+
+
+        describe("2.Poder darle me gusta a una publicación, y conocer cuántas veces fue votada de esta forma.") {
+
+            ischia.leDaLikeA(textoBienvenida)
+            zubeldia.leDaLikeA(textoBienvenida)
+            vivas.agregarAmigo(sava)
+            vivas.agregarPermitidos(sava)
+            sava.leDaLikeA(textoDespedida)
+
+
+            it("saber quien dio like a textoBienvenida") {
+                textoBienvenida.quienDioLike.shouldBe(setOf(ischia, zubeldia))
+            }
+            it("cantidad de likes de textoBienvenida") {
                 textoBienvenida.cantidadDeLikes().shouldBe(2)
             }
             it("textoDespedida debe tener 1 like"){
                 textoDespedida.cantidadDeLikes().shouldBe(1)
             }
+            it("saber quien dio like a textoDespedida"){
+                textoDespedida.quienDioLike.shouldBe(setOf(sava))
+            }
         }
+
+
+
         describe("3. Saber si un usuario es más amistoso que otro: esto ocurre cuando el primero tiene más amigos."){
+
+            sava.agregarAmigo(beccacece)
+            ischia.agregarAmigo(vivas)
+            ischia.agregarAmigo(pizzi)
+            pizzi.agregarAmigo(zubeldia)
+            beccacece.agregarAmigo(zubeldia)
+            vivas.agregarAmigo(pizzi)
+            russo.agregarAmigo(radaelli)
+            radaelli.agregarAmigo(llop)
+            llop.agregarAmigo(sava)
+            sava.agregarAmigo(radaelli)
+            sava.agregarAmigo(vivas)
+            vivas.agregarAmigo(radaelli)
+            chacho.agregarAmigo(llop)
+            chacho.agregarAmigo(russo)
+            chacho.agregarAmigo(beccacece)
+            vivas.agregarAmigo(llop)
+
             it("Sava es mas amistoso que Pizzi") {
                 sava.esMasAmistosoQue(pizzi).shouldBeTrue()
             }
@@ -128,9 +136,29 @@ class UsuarioTest : DescribeSpec({
                 zubeldia.esMasAmistosoQue(llop).shouldBeFalse()
             }
         }
+
+
+
         describe("4. Saber si un usuario puede ver una cierta publicacion."){
+
+            sava.agregarAmigo(vivas)
+            vivas.agregarAmigo(llop)
+            vivas.agregarAmigo(radaelli)
+            chacho.agregarAmigo(llop)
+            chacho.agregarAmigo(russo)
+            chacho.agregarAmigo(beccacece)
+
+            vivas.agregarPermitidos(sava)
+            vivas.agregarPermitidos(llop)
+            chacho.agregarPermitidos(llop)
+            chacho.agregarPermitidos(russo)
+            chacho.agregarPermitidos(beccacece)
+
+            sava.agregarExcluidos(zubeldia)
+
             it("Modificar privacidad de una publicación"){
                 textoBienvenida.cambiarPrivacidad(SoloAmigos)
+                russo.puedeVer(textoBienvenida).shouldBeFalse()
             }
             it("Russo puede ver textoBienvenida"){
                 russo.puedeVer(textoBienvenida).shouldBeTrue()
@@ -157,26 +185,82 @@ class UsuarioTest : DescribeSpec({
                 vivas.puedeVer(videoFiesta).shouldBeTrue()
             }
         }
-        describe("Funciones de likes") {
-            it("saber quien dio like") {
-                textoBienvenida.quienDioLike.shouldBe(setOf(ischia, zubeldia))
+
+
+
+        describe("5.Determinar los mejores amigos de un usuario: el conjunto de sus amigos que pueden ver todas sus publicaciones."){
+
+            chacho.agregarAmigo(llop)
+            chacho.agregarAmigo(russo)
+            chacho.agregarAmigo(beccacece)
+
+            chacho.agregarPermitidos(llop)
+            chacho.agregarPermitidos(russo)
+            chacho.agregarPermitidos(beccacece)
+
+            vivas.agregarAmigo(llop)
+            vivas.agregarAmigo(sava)
+
+            vivas.agregarPermitidos(sava)
+            vivas.agregarPermitidos(llop)
+
+            it("mejores amigos de chacho"){
+                chacho.mejoresAmigos().shouldBe((setOf(llop, russo, beccacece)))
             }
-            it("cantidad de likes") {
-                textoBienvenida.cantidadDeLikes().shouldBe(2)
+            it("mejores amigos de vivas"){
+                vivas.mejoresAmigos().shouldBe((setOf(sava, llop)))
             }
 
         }
-        describe("Saber quien es mas popular"){
-            it("saber quien es el amigo mas popular") {
+
+
+
+        describe("6. Saber cual es el amigo más popular que tiene un usuario. Es decir, el amigo que tiene mas me gusta entre todas sus publicaciones."){
+
+            ischia.agregarAmigo(vivas)
+            ischia.agregarAmigo(pizzi)
+            pizzi.agregarAmigo(zubeldia)
+            vivas.agregarAmigo(pizzi)
+            sava.agregarAmigo(vivas)
+            vivas.agregarAmigo(radaelli)
+            vivas.agregarAmigo(llop)
+
+
+            ischia.leDaLikeA(textoBienvenida)
+            zubeldia.leDaLikeA(textoBienvenida)
+            sava.leDaLikeA(textoDespedida)
+            sava.leDaLikeA(fotoDelPartido)
+            sava.leDaLikeA(fotoEnCuzco)
+
+            it("saber quien es el amigo mas popular de ischia") {
                 ischia.amigoMasPopular().shouldBe(vivas)
             }
-            it("mejores amigos de un usuario"){
-                chacho.mejoresAmigos().shouldBe((setOf(llop, russo, beccacece)))
+
+            it("saber quien es el amigo mas popular de vivas"){
+                vivas.amigoMasPopular().shouldBe(pizzi)
             }
         }
+
+
+
         describe("7. Saber si un usuario stalkea a otro. Lo cual ocurre si el stalker le dio me gusta a más del 90% de sus publicaciones.") {
-            it("Un usuario es stalkeadp por otro:") {
+
+            sava.agregarAmigo(vivas)
+            vivas.agregarAmigo(radaelli)
+
+            vivas.agregarPermitidos(sava)
+
+            sava.leDaLikeA(textoDespedida)
+            sava.leDaLikeA(fotoDelPartido)
+            sava.leDaLikeA(fotoEnCuzco)
+            radaelli.leDaLikeA(fotoEnCuzco)
+
+            it("vivas es stalkeado por sava:") {
                 vivas.esStalkeadoPor(sava).shouldBeTrue()
+            }
+
+            it("vivas no es stalkeado por radaelli:"){
+                vivas.esStalkeadoPor(radaelli).shouldBeFalse()
             }
         }
     }
